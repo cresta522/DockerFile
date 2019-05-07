@@ -56,7 +56,7 @@ RUN pip install readline
 RUN pip install virtualenv
 
 # Djangoインストール
-RUN pip install django
+RUN pip install django==2.1
 
 # おまけ
 # Django以外のフレームワークインストール
