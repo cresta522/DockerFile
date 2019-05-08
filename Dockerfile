@@ -43,11 +43,10 @@ ENV PATH $PYENV_ROOT/bin:$PATH
 # Python管理用に pyenvを入れる
 RUN git clone https://github.com/yyuu/pyenv.git $HOME/.pyenv
 
-RUN echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bash_profile
 # pyenv用の$PATH
-RUN echo 'export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bash_profile
+ENV PYENV_ROOT $HOME/.pyenv
+ENV PATH $PYENV_ROOT/bin:$PATH
 
-RUN source ~/.bash_profile
 RUN echo 'eval "$(pyenv init -)"' >> ~/.bash_profile
 RUN source ~/.bash_profile
 
@@ -62,15 +61,18 @@ RUN ln -s $PYENV_ROOT/versions/3.7.2/bin/python3 /bin/python
 # pipのリンク設定
 RUN ln -s $PYENV_ROOT/versions/3.7.2/bin/pip3 /bin/pip
 
+RUN pip install --upgrade pip
+
 # readlineインストール
 RUN pip install readline
 
 # # virtualenvインストール
 RUN pip install virtualenv
 
-
 # # Djangoインストール
 RUN pip install django==2.1
+
+ENV PATH $PATH:$HOME/.pyenv/versions/3.7.2/bin
 
 # おまけ
 # Django以外のフレームワークインストール
@@ -80,5 +82,5 @@ RUN pip install django==2.1
 # Flaskインストール
 # RUN pip install Flask
 
-WORKDIR /root
+WORKDIR /code
 CMD ["/bin/bash"]
